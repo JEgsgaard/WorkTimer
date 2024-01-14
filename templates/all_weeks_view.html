@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="center margintop">
+  <h3 class="header">Alle uger {{ year }}</h3>
+  <div class="tablediv">
+    <table class="fixed">
+      <tr>
+        <th>Uge</th>
+        <th>total</th>
+        <th></th>
+        <th>+-</th>
+        <th>Akkum</th>
+      </tr>
+      {% for data in week_data %}
+      <tr>
+        <td>
+          <a href="{% url 'show_week' data.week_number %}?reverse=false">{{ data.week_number }}</a>
+        </td>
+        <td>
+          {{ data.week_total }}
+        </td>
+        <td>
+          {{ data.week_goal }}
+        </td>
+        <td {% if data.week_diff.0 == "-" %} style="color: red;" {% else %} style="color: green;" {% endif %}>
+          {{ data.week_diff }}
+        </td>
+        <td {% if data.accumulated_margin.0 == "-" %} style="color: red;" {% else %} style="color: green;" {% endif %}>
+          {{ data.accumulated_margin }}
+        </td>
+      </tr>
+    {% endfor %}
+    </table>
+    <br>
+  </div>
+</div>
+
+  <div class="center">
+    <a href="{% url 'show_overview' %}" class="sml-button">Overblik</a>
+  </div>
+
+  <div class="center">
+    <a href="{% url 'index' %}" class="sml-button">Tilbage</a>
+  </div>
+</div>
+
+{% endblock %}

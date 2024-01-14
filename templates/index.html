@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="center margintop">
+  <form method="POST" action=".">
+    {% csrf_token %}
+    <div class="btn-group">
+      <a href="{% url 'take_timestamp' %}" class="btn btn-primary btn-lg" id="timestampButton" onclick="startStopTimer('{{ latest.id }}')">
+        {% if latest.state == True %}
+          STOP <p class="sub-text" id="timerText">{{ dur }}</p>
+        {% else %}
+          START
+        {% endif %}
+      </a>
+    </div>
+  </form>
+
+  <div class="margintop">
+    <a href="{% url 'manual_timestamp' %}">Manual Timestamp</a>
+  </div>
+
+  <div class="margintop">
+    <h4 class="header">Uge {{ week_number }}</h4>
+    <h3 class="header">{{ today_date|date:'d/m/y' }}</h3>
+  </div>
+
+  <div class="tablediv margintop">
+    <table class="table fixed">
+      <thead>
+        <tr>
+          <th>Start</th>
+          <th>Stop</th>
+          <th>Varighed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in day_data %}
+        <tr>
+          <td>{{ data.start|date:'H:i' }}</td>
+          <td>{{ data.end|date:'H:i' }}</td>
+          <td>{{ data.dur }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="center">
+      <a href="{% url 'edit_day' %}">Rediger</a>
+    </div>
+  </div>
+
+  <div class="margintop">
+    <h3 class="header">Dagstotal {{ day_total }}</h3>
+    <h3 class="header">
+      <a href="{% url 'show_week' week_number %}">Ugetotal {{ week_total }}</a>
+    </h3>
+    <p class="header">
+      <a href="{% url 'show_all_weeks' %}">Månedstotal {{ month_total }}</a>
+    </p>
+  </div>
+
+  <!-- Additional content or links -->
+
+</div>
+
+{% endblock %}
